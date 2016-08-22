@@ -58,7 +58,7 @@ makeResponse stringInput textInput floatingInput =
 main = scotty 3000 $ do
 
   get "/" $ do
-   html $ mconcat ["<h1>GET /float/2.2345</h1>", "<h1>GET /double/2.2345</h1>"]
+   html $ mconcat ["<h1><a href=\"/float/2.2345\">GET /float/2.2345</a></h1>", "<h1><a href=\"/double/2.2345\">GET /double/2.2345</a></h1>"]
 
   get "/float/:f" $ do
     stringInput :: String <- param "f"
