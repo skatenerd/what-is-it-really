@@ -15,7 +15,7 @@ import Data.Ratio
 import GHC.Generics
 import qualified Data.Scientific as S
 
-data Answer = Answer { actualValue :: S.Scientific, original :: S.Scientific, difference :: S.Scientific }  deriving (Show, Generic)
+data Answer = Answer { actualValue :: S.Scientific, whatTheMachineThought :: S.Scientific, difference :: S.Scientific }  deriving (Show, Generic)
 
 instance Aeson.ToJSON Answer
 
@@ -27,7 +27,7 @@ makeResponse floatingInput stringInput =
         scientificInput :: S.Scientific
         scientificInput = read stringInput
         error = impreciseScientificInput - scientificInput
-    in json $ Answer {actualValue = scientificInput, original = impreciseScientificInput, difference = error}
+    in json $ Answer {actualValue = scientificInput, whatTheMachineThought = impreciseScientificInput, difference = error}
 
 main = scotty 3000 $ do
 
