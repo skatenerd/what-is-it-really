@@ -13,8 +13,9 @@ import qualified Data.Text.Read as R
 import qualified Data.Text as T
 import Data.Ratio
 import GHC.Generics
+import qualified Data.Scientific as S
 
-data Answer = Answer { actualValue :: String, original :: String, approxDifference :: Double }  deriving (Show, Generic)
+data Answer = Answer { actualValue :: String, original :: String, approxDifference :: S.Scientific }  deriving (Show, Generic)
 
 instance Aeson.ToJSON Answer
 
