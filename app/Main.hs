@@ -29,10 +29,17 @@ makeResponse floatingInput stringInput =
         error = impreciseScientificInput - scientificInput
     in json $ Answer {actualValue = scientificInput, whatTheMachineThought = impreciseScientificInput, difference = error}
 
+readme = "Your computer represents non-whole numbers imprecisely.\
+\  It does this so that it can use a bounded amount of space, and so that\
+\ numbers will be easy to add and multiply.  This is a tool to show you\
+\ how a given number is represented within your computer (and how that differs from what you thought.\
+\ the \"float\" route corresponds to a 32-bit representation and the \"double\" route corresponds\
+\ to a 64-bit representation"
+
 main = scotty 3000 $ do
 
   get "/" $ do
-   html $ mconcat ["<h1><a href=\"/float/2.2345\">GET /float/2.2345</a></h1>", "<h1><a href=\"/double/2.2345\">GET /double/2.2345</a></h1>"]
+   html $ mconcat ["<h1><a href=\"/float/2.2345\">GET /float/2.2345</a></h1>", "<h1><a href=\"/double/2.2345\">GET /double/2.2345</a></h1>", "<h3>", readme, "</h3>"]
 
   get "/float/:f" $ do
     floatInput :: Float <- param "f"
