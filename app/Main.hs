@@ -22,11 +22,10 @@ instance Aeson.ToJSON Answer
 floatToRational f = let (significand, exponent) = decodeFloat f
                     in ((fromIntegral significand) * (fromIntegral 2) ^^ exponent)
 
-makeResponse floatingInput textInput =
-    let rationalInput :: Rational
-        rationalInput = either (const 0.0) fst $ R.rational textInput
-        impreciseScientificInput = fromRational $ floatToRational floatingInput
-        scientificInput = fromRational rationalInput
+makeResponse floatingInput stringInput =
+    let impreciseScientificInput = fromRational $ floatToRational floatingInput
+        scientificInput :: S.Scientific
+        scientificInput = read stringInput
         error = impreciseScientificInput - scientificInput
     in json $ Answer {actualValue = scientificInput, original = impreciseScientificInput, difference = error}
 
@@ -37,10 +36,10 @@ main = scotty 3000 $ do
 
   get "/float/:f" $ do
     floatInput :: Float <- param "f"
-    textInput :: T.Text <- param "f"
-    makeResponse floatInput textInput
+    stringInput :: String <- param "f"
+    makeResponse floatInput stringInput
 
   get "/double/:f" $ do
     doubleInput :: Double <- param "f"
-    textInput :: T.Text <- param "f"
-    makeResponse doubleInput textInput
+    stringInput :: String <- param "f"
+    makeResponse doubleInput stringInput
