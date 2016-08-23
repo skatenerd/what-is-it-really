@@ -32,8 +32,8 @@ makeResponse floatingInput stringInput =
 readme = "Your computer represents non-whole numbers imprecisely.\
 \  It does this so that it can use a bounded amount of space, and so that\
 \ numbers will be easy to add and multiply.  This is a tool to show you\
-\ how a given number is represented within your computer (and how that differs from what you thought.\
-\ the \"float\" route corresponds to a 32-bit representation and the \"double\" route corresponds\
+\ how a given number is represented within your computer (and how that differs from what you thought).  \
+\  The \"float\" route corresponds to a 32-bit representation and the \"double\" route corresponds\
 \ to a 64-bit representation"
 
 sourceLink = "<a href=https://github.com/skatenerd/what-is-it-really/blob/master/app/Main.hs>source</a>"
