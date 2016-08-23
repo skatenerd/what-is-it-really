@@ -36,7 +36,7 @@ readme = "Your computer represents non-whole numbers imprecisely.\
 \ the \"float\" route corresponds to a 32-bit representation and the \"double\" route corresponds\
 \ to a 64-bit representation"
 
-main = scotty 3000 $ do
+main = scotty 80 $ do
 
   get "/" $ do
    html $ mconcat ["<h1><a href=\"/float/2.2345\">GET /float/2.2345</a></h1>", "<h1><a href=\"/double/2.2345\">GET /double/2.2345</a></h1>", "<h3>", readme, "</h3>"]
