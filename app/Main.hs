@@ -15,24 +15,32 @@ import Data.Ratio
 import GHC.Generics
 import qualified Data.Scientific as S
 
-data Answer = Answer { actualValue :: S.Scientific, whatTheMachineThought :: S.Scientific, difference :: S.Scientific }  deriving (Show, Generic)
+data MachineOpinion = MachineOpinion { decimal :: S.Scientific, expression :: String } deriving (Show, Generic)
+data Answer = Answer { actualValue :: S.Scientific, whatTheMachineThought :: MachineOpinion, difference :: S.Scientific } deriving (Show, Generic)
 
 instance Aeson.ToJSON Answer
+instance Aeson.ToJSON MachineOpinion
 
+floatToRational :: (RealFloat f) => f -> Rational
 floatToRational f = let (significand, exponent) = decodeFloat f
                     in ((fromIntegral significand) * (fromIntegral 2) ^^ exponent)
 
+getMachineExpression floatingInput = let (significand, exponent) = decodeFloat floatingInput
+                                     in mconcat ["2 ^ (", show exponent, ") * ", show significand]
+
 makeResponse floatingInput stringInput =
     let impreciseScientificInput = fromRational $ floatToRational floatingInput
+        machineExpression = getMachineExpression floatingInput
         scientificInput :: S.Scientific
         scientificInput = read stringInput
         error = impreciseScientificInput - scientificInput
-    in json $ Answer {actualValue = scientificInput, whatTheMachineThought = impreciseScientificInput, difference = error}
+        machineOpinion = MachineOpinion { decimal = impreciseScientificInput, expression = machineExpression }
+    in json $ Answer {actualValue = scientificInput, whatTheMachineThought = machineOpinion, difference = error}
 
 readme = "Your computer represents non-whole numbers imprecisely.\
 \  It does this so that it can use a bounded amount of space, and so that\
 \ numbers will be easy to add and multiply.  This is a tool to show you\
-\ how a given number is represented within your computer (and how that differs from what you thought).  \
+\ how a given number is represented within your computer (and how that differs from what you thought).\
 \  The \"float\" route corresponds to a 32-bit representation and the \"double\" route corresponds\
 \ to a 64-bit representation"
 
